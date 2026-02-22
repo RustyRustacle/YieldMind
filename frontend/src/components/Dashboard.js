@@ -1,70 +1,76 @@
-import React, { useEffect, useState } from 'react';
-import { ethers } from 'ethers';
-import { VAULT_ADDRESS, VAULT_ABI } from '../config/contracts';
+import React from 'react';
 
-export default function Dashboard({ signer, account }) {
-    const [totalAssets, setTotalAssets] = useState('0');
-    const [userBalance, setUserBalance] = useState('0');
-    const [apy, setApy] = useState('12.4'); // Mocked for visual effect
+// Receives demo state from App.js parent
+export default function Dashboard({ signer, account, demoTVL, demoPosition, demoAPY }) {
 
-    useEffect(() => {
-        if (!signer) return;
-        const vault = new ethers.Contract(VAULT_ADDRESS, VAULT_ABI, signer);
-        const fetchData = async () => {
-            try {
-                const assets = await vault.totalAssets();
-                setTotalAssets(ethers.formatEther(assets));
-                if (account) {
-                    const balance = await vault.balanceOf(account.address);
-                    setUserBalance(ethers.formatEther(balance));
-                }
-            } catch (e) {
-                console.error("Dashboard fetch error", e);
-                // Fallback to avoid empty state
-                setTotalAssets('1,240,500');
-                if (account) setUserBalance('10.0');
-            }
-        };
-        fetchData();
-    }, [signer, account]);
+    // When no demo data yet, show zeros (not mock data)
+    const tvl = demoTVL ?? '0';
+    const position = demoPosition ?? '0';
+    const apy = demoAPY ?? '0.0';
+
+    const stats = [
+        {
+            label: 'Total Value Locked',
+            value: parseFloat(tvl).toLocaleString('en-US', { maximumFractionDigits: 2 }),
+            unit: 'WDOT',
+            sub: tvl === '0' ? 'No deposits yet' : '↑ Live position',
+            subColor: tvl === '0' ? 'rgba(255,255,255,0.2)' : '#4ade80',
+            accent: 'var(--pk-pink)',
+        },
+        {
+            label: 'Your Position',
+            value: parseFloat(position).toLocaleString('en-US', { maximumFractionDigits: 2 }),
+            unit: 'ymWDOT',
+            sub: position === '0' ? 'Deposit to start' : '≈ $' + (parseFloat(position) * 7.5).toFixed(2) + ' USD',
+            subColor: 'rgba(255,255,255,0.3)',
+            accent: 'var(--pk-purple)',
+        },
+        {
+            label: 'Current APY',
+            value: apy,
+            unit: '%',
+            sub: apy === '0.0' || apy === '0' ? 'Run AI Rebalance' : 'AI Optimized · Live',
+            subColor: apy === '0.0' || apy === '0' ? 'rgba(255,255,255,0.2)' : 'var(--pk-purple)',
+            accent: 'var(--pk-indigo)',
+        },
+    ];
 
     return (
-        <div className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div className="glass-card p-6 border-l-4 border-l-pink shadow-lg hover:shadow-pink/10 transition-all">
-                    <div className="text-gray-400 text-sm font-medium uppercase tracking-wider mb-2">Total Value Locked</div>
-                    <div className="flex items-baseline">
-                        <span className="text-3xl font-bold text-white">{totalAssets}</span>
-                        <span className="text-pink ml-2 font-semibold">WDOT</span>
-                    </div>
-                    <div className="mt-4 text-xs text-green-400 flex items-center">
-                        <span className="mr-1">↑</span> 2.1% from last 24h
-                    </div>
-                </div>
-
-                <div className="glass-card p-6 border-l-4 border-l-cyan-400 shadow-lg hover:shadow-cyan-400/10 transition-all">
-                    <div className="text-gray-400 text-sm font-medium uppercase tracking-wider mb-2">Your Position</div>
-                    <div className="flex items-baseline">
-                        <span className="text-3xl font-bold text-white">{userBalance}</span>
-                        <span className="text-cyan-400 ml-2 font-semibold">ymWDOT</span>
-                    </div>
-                    <div className="mt-4 text-xs text-gray-500 italic">
-                        ≈ ${(parseFloat(userBalance) * 7.5).toFixed(2)} USD
-                    </div>
-                </div>
-
-                <div className="glass-card p-6 border-l-4 border-l-purple-500 shadow-lg hover:shadow-purple-500/10 transition-all">
-                    <div className="text-gray-400 text-sm font-medium uppercase tracking-wider mb-2">Current APY</div>
-                    <div className="flex items-baseline">
-                        <span className="text-3xl font-bold text-white glow-pink">{apy}</span>
-                        <span className="text-pink ml-2 font-semibold">%</span>
-                    </div>
-                    <div className="mt-4 flex gap-2">
-                        <span className="px-2 py-0.5 bg-pink/20 text-pink text-[10px] rounded uppercase font-bold">Stable</span>
-                        <span className="px-2 py-0.5 bg-cyan-400/20 text-cyan-400 text-[10px] rounded uppercase font-bold">AI Optimized</span>
-                    </div>
-                </div>
+        <div>
+            <div style={{
+                fontFamily: 'IBM Plex Mono, monospace', fontSize: '0.58rem',
+                letterSpacing: '0.25em', textTransform: 'uppercase',
+                color: 'var(--pk-pink)', marginBottom: '1.5rem',
+            }}>
+                Vault Dashboard
             </div>
+
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1rem' }} className="dash-grid">
+                {stats.map((s, i) => (
+                    <div key={i} style={{
+                        borderRadius: '14px', padding: '1.25rem',
+                        background: 'rgba(255,255,255,0.03)',
+                        border: '1px solid rgba(255,255,255,0.06)',
+                        borderLeft: '3px solid ' + s.accent,
+                        transition: 'all 0.3s ease',
+                    }}>
+                        <div style={{ fontSize: '0.7rem', textTransform: 'uppercase', letterSpacing: '0.12em', color: 'rgba(255,255,255,0.35)', fontFamily: 'IBM Plex Mono, monospace', marginBottom: '0.6rem' }}>
+                            {s.label}
+                        </div>
+                        <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.4rem', marginBottom: '0.5rem' }}>
+                            <span style={{ fontFamily: 'Outfit, sans-serif', fontWeight: 900, fontSize: '2rem', letterSpacing: '-0.04em', color: s.value === '0' ? 'rgba(255,255,255,0.25)' : '#fff', transition: 'color 0.4s' }}>
+                                {s.value}
+                            </span>
+                            <span style={{ color: s.accent, fontWeight: 600, fontSize: '0.85rem' }}>{s.unit}</span>
+                        </div>
+                        <div style={{ fontSize: '0.75rem', color: s.subColor, fontFamily: 'IBM Plex Mono, monospace', transition: 'color 0.4s' }}>
+                            {s.sub}
+                        </div>
+                    </div>
+                ))}
+            </div>
+
+            <style>{'@media (max-width: 600px) { .dash-grid { grid-template-columns: 1fr !important; } }'}</style>
         </div>
     );
 }

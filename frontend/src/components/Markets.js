@@ -1,71 +1,139 @@
 import React from 'react';
 
 const PROTOCOLS = [
-    { name: 'Acala', asset: 'DOT', apy: '14.2', tvl: '125M', risk: 'Low', color: 'text-pink' },
-    { name: 'Moonbeam', asset: 'GLMR', apy: '11.8', tvl: '98M', risk: 'Medium', color: 'text-purple-400' },
-    { name: 'Interlay', asset: 'iBTC', apy: '8.5', tvl: '45M', risk: 'Low', color: 'text-yellow-500' },
-    { name: 'Parallel', asset: 'DOT', apy: '15.4', tvl: '110M', risk: 'Medium', color: 'text-blue-400' },
-    { name: 'Equilibrium', asset: 'EQD', apy: '12.1', tvl: '32M', risk: 'Medium', color: 'text-cyan-400' },
+    { name: 'Acala', asset: 'DOT', apy: '14.2', tvl: '125M', risk: 'Low', accentColor: 'var(--pk-pink)' },
+    { name: 'Moonbeam', asset: 'GLMR', apy: '11.8', tvl: '98M', risk: 'Medium', accentColor: 'var(--pk-purple)' },
+    { name: 'Interlay', asset: 'iBTC', apy: '8.5', tvl: '45M', risk: 'Low', accentColor: '#f59e0b' },
+    { name: 'Parallel', asset: 'DOT', apy: '15.4', tvl: '110M', risk: 'Medium', accentColor: 'var(--pk-indigo)' },
+    { name: 'Equilibrium', asset: 'EQD', apy: '12.1', tvl: '32M', risk: 'Medium', accentColor: '#22d3ee' },
 ];
+
+function RiskBadge({ risk }) {
+    const isLow = risk === 'Low';
+    return (
+        <span style={{
+            display: 'inline-flex', alignItems: 'center', gap: '0.3rem',
+            padding: '0.2rem 0.65rem',
+            borderRadius: '100px',
+            background: isLow ? 'rgba(34,197,94,0.1)' : 'rgba(251,191,36,0.1)',
+            border: `1px solid ${isLow ? 'rgba(34,197,94,0.25)' : 'rgba(251,191,36,0.25)'}`,
+            color: isLow ? '#4ade80' : '#fbbf24',
+            fontFamily: 'IBM Plex Mono, monospace',
+            fontSize: '0.58rem',
+            letterSpacing: '0.1em',
+            textTransform: 'uppercase',
+        }}>
+            <span style={{ width: '4px', height: '4px', borderRadius: '50%', background: 'currentColor', display: 'inline-block' }} />
+            {risk}
+        </span>
+    );
+}
 
 export default function Markets() {
     return (
-        <div className="space-y-8 animate-in slide-in-from-right duration-700">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div className="glass-card p-8 bg-gradient-to-br from-pink/10 to-transparent border-pink/20">
-                    <h2 className="text-2xl font-bold text-white mb-2">Active Yield Markets</h2>
-                    <p className="text-gray-400">Discover and compare optimized yield opportunities across the Polkadot ecosystem.</p>
+        <div>
+            {/* Header row */}
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1.5rem' }}>
+                <div>
+                    <div style={{ fontFamily: 'IBM Plex Mono, monospace', fontSize: '0.58rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: 'var(--pk-pink)', marginBottom: '0.4rem' }}>
+                        Active Yield Markets
+                    </div>
+                    <p style={{ color: 'rgba(255,255,255,0.35)', fontSize: '0.85rem', lineHeight: 1.6 }}>
+                        AI-ranked opportunities across the Polkadot ecosystem.
+                    </p>
                 </div>
-                <div className="glass-card p-8 border-cyan-400/20">
-                    <div className="flex items-center justify-between">
-                        <div>
-                            <div className="text-xs text-gray-500 font-bold uppercase mb-1">Total Market TVL</div>
-                            <div className="text-3xl font-black text-white">$410M+</div>
-                        </div>
-                        <div className="h-12 w-12 rounded-xl bg-cyan-400/10 flex items-center justify-center text-2xl">💰</div>
+                <div style={{
+                    display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '1rem',
+                }}>
+                    <div style={{ textAlign: 'right' }}>
+                        <div style={{ fontFamily: 'IBM Plex Mono, monospace', fontSize: '0.55rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.3)', marginBottom: '0.2rem' }}>Total Market TVL</div>
+                        <div style={{ fontFamily: 'Outfit, sans-serif', fontWeight: 900, fontSize: '1.75rem', color: '#fff', letterSpacing: '-0.04em' }}>$410M+</div>
                     </div>
                 </div>
             </div>
 
-            <div className="glass-card overflow-hidden border-white/5">
-                <table className="w-full text-left border-collapse">
-                    <thead>
-                        <tr className="bg-white/5 text-gray-400 text-xs font-bold uppercase tracking-widest border-b border-white/10">
-                            <th className="px-6 py-4">Protocol</th>
-                            <th className="px-6 py-4">Primary Asset</th>
-                            <th className="px-6 py-4">Current APY</th>
-                            <th className="px-6 py-4">TVL</th>
-                            <th className="px-6 py-4">Risk Level</th>
-                            <th className="px-6 py-4 text-right">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody className="divide-y divide-white/5">
-                        {PROTOCOLS.map((p, i) => (
-                            <tr key={i} className="hover:bg-white/5 transition-colors group">
-                                <td className="px-6 py-6 font-bold text-white flex items-center gap-3">
-                                    <div className={`w-8 h-8 rounded-lg bg-current opacity-20 ${p.color}`}></div>
-                                    {p.name}
-                                </td>
-                                <td className="px-6 py-6 text-gray-300 font-mono">{p.asset}</td>
-                                <td className="px-6 py-6">
-                                    <span className="text-xl font-black text-white glow-pink">{p.apy}%</span>
-                                </td>
-                                <td className="px-6 py-6 text-gray-400">${p.tvl}</td>
-                                <td className="px-6 py-6">
-                                    <span className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-tighter ${p.risk === 'Low' ? 'bg-green-500/10 text-green-400' : 'bg-yellow-500/10 text-yellow-400'
-                                        }`}>
-                                        {p.risk} Risk
-                                    </span>
-                                </td>
-                                <td className="px-6 py-6 text-right">
-                                    <button className="px-4 py-2 bg-white/5 rounded-lg text-xs font-bold text-gray-300 hover:bg-pink hover:text-white transition transform group-hover:scale-105">
-                                        View Details
-                                    </button>
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
+            {/* Table */}
+            <div style={{
+                borderRadius: '16px',
+                overflow: 'hidden',
+                border: '1px solid rgba(124,58,237,0.15)',
+            }}>
+                {/* Table header */}
+                <div style={{
+                    display: 'grid',
+                    gridTemplateColumns: '2fr 1fr 1.2fr 1fr 1.2fr 1fr',
+                    padding: '0.75rem 1.25rem',
+                    background: 'rgba(124,58,237,0.06)',
+                    borderBottom: '1px solid rgba(124,58,237,0.12)',
+                }}>
+                    {['Protocol', 'Asset', 'APY', 'TVL', 'Risk', ''].map((h, i) => (
+                        <div key={i} style={{
+                            fontFamily: 'IBM Plex Mono, monospace',
+                            fontSize: '0.58rem',
+                            letterSpacing: '0.2em',
+                            textTransform: 'uppercase',
+                            color: 'rgba(255,255,255,0.3)',
+                            textAlign: i === 5 ? 'right' : 'left',
+                        }}>
+                            {h}
+                        </div>
+                    ))}
+                </div>
+
+                {/* Protocol rows */}
+                {PROTOCOLS.map((p, i) => (
+                    <div
+                        key={i}
+                        style={{
+                            display: 'grid',
+                            gridTemplateColumns: '2fr 1fr 1.2fr 1fr 1.2fr 1fr',
+                            padding: '1rem 1.25rem',
+                            borderBottom: i < PROTOCOLS.length - 1 ? '1px solid rgba(255,255,255,0.04)' : 'none',
+                            alignItems: 'center',
+                            transition: 'background 0.2s',
+                            cursor: 'default',
+                        }}
+                        onMouseEnter={e => e.currentTarget.style.background = 'rgba(124,58,237,0.05)'}
+                        onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+                    >
+                        {/* Protocol name */}
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                            <div style={{
+                                width: '8px', height: '8px',
+                                borderRadius: '50%',
+                                background: p.accentColor,
+                                boxShadow: `0 0 8px ${p.accentColor}`,
+                                flexShrink: 0,
+                            }} />
+                            <span style={{ fontFamily: 'Outfit, sans-serif', fontWeight: 700, color: '#fff', fontSize: '0.9rem' }}>{p.name}</span>
+                        </div>
+
+                        {/* Asset */}
+                        <span style={{ fontFamily: 'IBM Plex Mono, monospace', fontSize: '0.78rem', color: 'rgba(255,255,255,0.45)', letterSpacing: '0.05em' }}>
+                            {p.asset}
+                        </span>
+
+                        {/* APY */}
+                        <span style={{ fontFamily: 'Outfit, sans-serif', fontWeight: 900, fontSize: '1.15rem', color: p.accentColor, letterSpacing: '-0.03em' }}>
+                            {p.apy}%
+                        </span>
+
+                        {/* TVL */}
+                        <span style={{ fontFamily: 'IBM Plex Mono, monospace', fontSize: '0.78rem', color: 'rgba(255,255,255,0.4)' }}>
+                            ${p.tvl}
+                        </span>
+
+                        {/* Risk badge */}
+                        <div><RiskBadge risk={p.risk} /></div>
+
+                        {/* Action */}
+                        <div style={{ textAlign: 'right' }}>
+                            <button className="ym-btn-secondary" style={{ padding: '0.35rem 0.85rem', fontSize: '0.65rem', letterSpacing: '0.1em' }}>
+                                Details
+                            </button>
+                        </div>
+                    </div>
+                ))}
             </div>
         </div>
     );

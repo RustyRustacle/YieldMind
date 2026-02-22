@@ -19,14 +19,26 @@ export default function WalletConnect({ onConnect, account }) {
 
     if (account && account.address) {
         return (
-            <div className="flex items-center gap-3 bg-white/5 border border-white/10 px-4 py-2 rounded-full backdrop-blur-md">
-                <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                <span className="text-white font-mono text-sm leading-none">
+            <div style={{
+                display: 'flex', alignItems: 'center', gap: '0.625rem',
+                background: 'rgba(124,58,237,0.08)',
+                border: '1px solid rgba(124,58,237,0.3)',
+                padding: '0.5rem 1rem',
+                borderRadius: '100px',
+                backdropFilter: 'blur(12px)',
+            }}>
+                <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#4ade80', animation: 'blink 1.5s ease-in-out infinite' }} />
+                <span style={{ fontFamily: 'IBM Plex Mono, monospace', fontSize: '0.75rem', color: '#fff', letterSpacing: '0.05em' }}>
                     {`${account.address.slice(0, 6)}...${account.address.slice(-4)}`}
                 </span>
-                <div className="w-6 h-6 rounded-full bg-gradient-to-r from-pink to-purple-500 flex items-center justify-center text-[10px] text-white font-bold">
-                    ⬢
-                </div>
+                {/* Polkadot dot icon */}
+                <div style={{
+                    width: '22px', height: '22px',
+                    borderRadius: '50%',
+                    background: 'linear-gradient(135deg, var(--pk-pink), var(--pk-purple))',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    fontSize: '0.6rem', color: '#fff', fontWeight: 900,
+                }}>⬡</div>
             </div>
         );
     }
@@ -35,20 +47,23 @@ export default function WalletConnect({ onConnect, account }) {
         <button
             onClick={handleConnect}
             disabled={connecting}
-            className={`px-8 py-2.5 rounded-full font-bold transition-all transform hover:scale-105 active:scale-95 ${connecting
-                ? 'bg-gray-800 text-gray-500 cursor-not-allowed'
-                : 'bg-white text-black hover:bg-pink hover:text-white shadow-[0_0_20px_rgba(255,255,255,0.15)] hover:shadow-pink/30'
-                }`}
+            className="ym-btn-primary"
+            style={{
+                padding: '0.6rem 1.5rem',
+                fontSize: '0.78rem',
+                opacity: connecting ? 0.65 : 1,
+                cursor: connecting ? 'not-allowed' : 'pointer',
+            }}
         >
             {connecting ? (
-                <span className="flex items-center">
-                    <svg className="animate-spin h-4 w-4 mr-2" viewBox="0 0 24 24">
-                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                <span style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    <svg style={{ animation: 'spin 1s linear infinite', width: '14px', height: '14px' }} viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3" fill="none" strokeDasharray="31.4 31.4" />
                     </svg>
                     Connecting...
                 </span>
             ) : 'Connect Wallet'}
+            <style>{`@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }`}</style>
         </button>
     );
 }
