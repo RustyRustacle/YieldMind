@@ -1,0 +1,275 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+:root {
+    --accent-purple: #a855f7;
+    --accent-indigo: #6366f1;
+    --bg-black: #030303;
+    --card-bg: rgba(8, 8, 12, 0.8);
+    --grid-color: rgba(255, 255, 255, 0.03);
+    --spotlight-color: rgba(168, 85, 247, 0.15);
+}
+
+html {
+    scroll-behavior: smooth;
+    background-color: var(--bg-black);
+}
+
+body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-black);
+    color: #ffffff;
+    overflow-x: hidden;
+    position: relative;
+}
+
+/* --- THE NEXUS INFRASTRUCTURE (GRID & GRAIN) --- */
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background-image: radial-gradient(var(--grid-color) 1px, transparent 1px);
+    background-size: 32px 32px;
+    z-index: -1;
+    pointer-events: none;
+}
+
+body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    opacity: 0.04;
+    z-index: -1;
+    pointer-events: none;
+}
+
+h1,
+h2,
+h3,
+.font-heading {
+    font-family: 'Outfit', sans-serif;
+    letter-spacing: -0.02em;
+}
+
+/* --- THE NEXUS BACKGROUND --- */
+.nexus-bg {
+    position: fixed;
+    inset: 0;
+    z-index: -2;
+    background: radial-gradient(circle at 50% -20%, #1e1b4b 0%, transparent 50%);
+    overflow: hidden;
+}
+
+.glow-sphere {
+    position: absolute;
+    width: 60vw;
+    height: 60vw;
+    background: radial-gradient(circle, var(--accent-purple) 0%, transparent 70%);
+    filter: blur(150px);
+    opacity: 0.15;
+    pointer-events: none;
+    animation: pulse-slow 20s infinite alternate;
+}
+
+@keyframes pulse-slow {
+    0% {
+        transform: translate(0, 0) scale(1);
+        opacity: 0.1;
+    }
+
+    100% {
+        transform: translate(100px, 50px) scale(1.1);
+        opacity: 0.2;
+    }
+}
+
+/* --- SPOTLIGHT CARDS --- */
+.nexus-card {
+    position: relative;
+    background: var(--card-bg);
+    border-radius: 24px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Mouse-following spotlight effect */
+.nexus-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+            rgba(168, 85, 247, 0.12),
+            transparent 40%);
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.5s;
+}
+
+.nexus-card:hover::before {
+    opacity: 1;
+}
+
+.nexus-content {
+    position: relative;
+    z-index: 1;
+    padding: 3rem;
+}
+
+/* --- TYPOGRAPHY --- */
+.text-hero {
+    font-size: clamp(4rem, 10vw, 9rem);
+    font-weight: 900;
+    line-height: 0.9;
+    letter-spacing: -0.05em;
+    background: linear-gradient(to bottom, #fff 40%, rgba(255, 255, 255, 0.4));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.text-gradient-purple {
+    background: linear-gradient(135deg, var(--accent-purple), var(--accent-indigo));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* --- BUTTONS --- */
+.btn-nexus {
+    display: inline-block;
+    padding: 1.25rem 3.5rem;
+    background: #fff;
+    color: #000;
+    border-radius: 12px;
+    font-family: 'Outfit', sans-serif;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+.btn-nexus:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 40px rgba(168, 85, 247, 0.4);
+}
+
+.btn-nexus-outline {
+    display: inline-block;
+    padding: 1.25rem 3.5rem;
+    background: rgba(255, 255, 255, 0.03);
+    color: #fff;
+    border-radius: 12px;
+    font-family: 'Outfit', sans-serif;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+.btn-nexus-outline:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* --- NEURAL CORE ANIMATION --- */
+.neural-core {
+    position: relative;
+    width: 400px;
+    height: 400px;
+}
+
+.core-orbit {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    border: 1px solid rgba(168, 85, 247, 0.3);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.orbit-1 {
+    width: 400px;
+    height: 400px;
+    animation: rotate 20s linear infinite;
+}
+
+.orbit-2 {
+    width: 300px;
+    height: 300px;
+    animation: rotate 15s linear reverse infinite;
+    border-style: dashed;
+}
+
+.orbit-3 {
+    width: 200px;
+    height: 200px;
+    animation: rotate 10s linear infinite;
+    border-width: 2px;
+}
+
+@keyframes rotate {
+    from {
+        transform: translate(-50%, -50%) rotate(0deg);
+    }
+
+    to {
+        transform: translate(-50%, -50%) rotate(360deg);
+    }
+}
+
+/* --- REVEAL ANIMATIONS --- */
+.reveal-nexus {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal-nexus.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* --- PIPELINE CONNECTORS --- */
+.pipeline-connector {
+    position: absolute;
+    left: 50%;
+    top: 100%;
+    width: 2px;
+    height: 100px;
+    background: linear-gradient(to bottom, var(--accent-purple), transparent);
+    transform: translateX(-50%);
+    z-index: -1;
+}
+
+/* CUSTOM SCROLLBAR */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #000;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #333;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--accent-purple);
+}
+
+/* TAILWIND COMPAT BITS */
+.container-nexus {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 2rem;
+}
