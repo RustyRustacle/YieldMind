@@ -11,7 +11,7 @@ export default function HeroSection({ onLaunchApp }) {
     }, []);
 
     return (
-        <section className="min-h-screen flex items-center relative overflow-hidden" style={{ paddingTop: '6rem' }}>
+        <section className="min-h-screen flex items-center relative overflow-hidden" style={{ paddingTop: '10rem', paddingBottom: '6rem' }}>
             {/* Extra center pink glow */}
             <div style={{
                 position: 'absolute', top: '30%', left: '50%',

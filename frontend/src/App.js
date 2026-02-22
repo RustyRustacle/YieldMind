@@ -341,16 +341,18 @@ function App() {
             {/* Brand */}
             <div>
               <div className="ym-logo" style={{ marginBottom: '1rem', cursor: 'default' }}>
-                <div className="ym-logo-icon">Y</div>
+                <div className="ym-logo-icon" style={{ background: 'transparent', border: '1px solid rgba(124,58,237,0.3)', padding: '5px' }}>
+                  <img src="/img/logo.png" alt="YieldMind" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+                </div>
                 <span className="ym-logo-text">YieldMind</span>
               </div>
               <p style={{ color: 'rgba(255,255,255,0.35)', fontSize: '0.875rem', lineHeight: 1.7, maxWidth: '280px', marginBottom: '1.5rem' }}>
                 Autonomous AI yield intelligence protocol, native to the Polkadot Hub ecosystem.
               </p>
               {/* Social links */}
-              <div style={{ display: 'flex', gap: '0.75rem' }}>
-                {['Twitter', 'Discord', 'Github', 'Docs'].map(s => (
-                  <a key={s} href="#" style={{
+              <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
+                {[['Twitter', 'https://x.com'], ['Discord', 'https://discord.gg'], ['Github', 'https://github.com/RustyRustacle/YieldMind'], ['Docs', 'https://docs.yieldmind.io']].map(([label, url]) => (
+                  <a key={label} href={url} target="_blank" rel="noopener noreferrer" style={{
                     fontFamily: 'IBM Plex Mono, monospace',
                     fontSize: '0.55rem',
                     letterSpacing: '0.15em',
@@ -362,9 +364,9 @@ function App() {
                     borderRadius: '6px',
                     transition: 'all 0.2s',
                   }}
-                    onMouseEnter={e => { e.target.style.color = '#fff'; e.target.style.borderColor = 'rgba(124,58,237,0.4)'; }}
-                    onMouseLeave={e => { e.target.style.color = 'rgba(255,255,255,0.25)'; e.target.style.borderColor = 'rgba(255,255,255,0.08)'; }}>
-                    {s}
+                    onMouseEnter={e => { e.currentTarget.style.color = '#fff'; e.currentTarget.style.borderColor = 'rgba(124,58,237,0.4)'; }}
+                    onMouseLeave={e => { e.currentTarget.style.color = 'rgba(255,255,255,0.25)'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.08)'; }}>
+                    {label}
                   </a>
                 ))}
               </div>
@@ -382,11 +384,16 @@ function App() {
                 </div>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
                   {col.links.map(l => (
-                    <a key={l} href="#" style={{ color: 'rgba(255,255,255,0.35)', fontSize: '0.875rem', textDecoration: 'none', transition: 'color 0.2s' }}
-                      onMouseEnter={e => e.target.style.color = '#fff'}
-                      onMouseLeave={e => e.target.style.color = 'rgba(255,255,255,0.35)'}>
+                    <button key={l} onClick={() => { }} style={{
+                      color: 'rgba(255,255,255,0.35)', fontSize: '0.875rem',
+                      background: 'none', border: 'none', cursor: 'pointer',
+                      textAlign: 'left', padding: 0,
+                      transition: 'color 0.2s', fontFamily: 'inherit',
+                    }}
+                      onMouseEnter={e => e.currentTarget.style.color = '#fff'}
+                      onMouseLeave={e => e.currentTarget.style.color = 'rgba(255,255,255,0.35)'}>
                       {l}
-                    </a>
+                    </button>
                   ))}
                 </div>
               </div>

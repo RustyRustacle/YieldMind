@@ -17,7 +17,7 @@ const STATS = [
 
 export default function StatsBar() {
     return (
-        <div className="ym-ticker" style={{ position: 'relative', zIndex: 1 }}>
+        <div className="ym-ticker" style={{ position: 'relative', zIndex: 1, margin: '2rem 0' }}>
             <div className="ym-ticker-track">
                 {STATS.map((s, i) => (
                     <div key={i} className="ym-ticker-item">
