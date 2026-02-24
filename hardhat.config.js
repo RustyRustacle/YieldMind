@@ -16,7 +16,8 @@ module.exports = {
       chainId: 1337,
     },
     "polkadot-hub-testnet": {
-      url: process.env.POLKADOT_HUB_RPC_URL || "https://rpc.polkadot-hub.testnet.io",
+      url: process.env.POLKADOT_HUB_RPC_URL || "https://eth-rpc-testnet.polkadot.io/",
+      chainId: 420420417,
       accounts: (() => {
         const pk = process.env.PRIVATE_KEY;
         if (!pk) return [];
